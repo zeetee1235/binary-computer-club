@@ -3,10 +3,15 @@ import numpy as np
 
 pygame.init()
 
-BLUE = (0, 0, 255)
-BLACK = (0, 0, 0)
+GRAY = (100, 100, 100)
+WHITE = (255, 255, 255)
 RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLACK = (0, 0, 0)
+BLUE = (40, 60, 255)
 YELLOW = (255, 255, 0)
+LIGHT_RED = (255, 50, 50)
+LIGHT_YELLOW = (240, 240, 0)
 large_font = pygame.font.SysFont('malgungothic', 72)
 CELL_SIZE = 100
 COLUMN_COUNT = 7
@@ -18,6 +23,7 @@ SCREEN_WIDTH = 700
 SCREEN_HEIGHT = 700
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) 
 
+done = False
 grid = np.zeros((ROW_COUNT, COLUMN_COUNT))
 mouse_x, mouse_y = pygame.mouse.get_pos()
 
@@ -60,18 +66,37 @@ def is_grid_full(count):
     return  False
 
 
+
 def runGame():
     game_over = 0
     turn = 0
     count = 0
+    global done
 
-    while True: 
+    def reset():
+        global game_over, turn, count, grid
+        game_over = 0
+        turn = 0
+        count = 0
+        grid = np.zeros((ROW_COUNT, COLUMN_COUNT))
+        screen.fill(WHITE)
+        runGame()
+
+
+    while not done: 
         clock.tick(30) 
-        screen.fill(BLACK) 
+        screen.fill(WHITE) 
 
+        
         for event in pygame.event.get():
+            
             if event.type == pygame.QUIT:
-                break
+                done=True
+            
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    reset()
+            
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 column_index = event.pos[0] // CELL_SIZE
                 count += 1
@@ -105,10 +130,9 @@ def runGame():
         if game_over == 0:
             mouse_x, mouse_y = pygame.mouse.get_pos()
 
-        #화면 그리기
-
+        #그리기 함수
         width = 700
-        pygame.draw.rect(screen, BLACK, pygame.Rect(0, 0, width, CELL_SIZE))
+        pygame.draw.rect(screen, WHITE, pygame.Rect(0, 0, width, CELL_SIZE))
         if turn == 0:
             pygame.draw.circle(screen, RED, (mouse_x, CELL_SIZE // 2), CELL_SIZE // 2 - 5)
         else: 
@@ -117,7 +141,7 @@ def runGame():
         for column_index in range(COLUMN_COUNT):
             for row_index in range(ROW_COUNT):
                 pygame.draw.rect(screen, BLUE, pygame.Rect(column_index * CELL_SIZE, row_index * CELL_SIZE + CELL_SIZE, CELL_SIZE, CELL_SIZE))
-                pygame.draw.circle(screen, BLACK, (column_index * CELL_SIZE + CELL_SIZE // 2, row_index * CELL_SIZE + CELL_SIZE + CELL_SIZE // 2), CELL_SIZE // 2 - 5)
+                pygame.draw.circle(screen, WHITE, (column_index * CELL_SIZE + CELL_SIZE // 2, row_index * CELL_SIZE + CELL_SIZE + CELL_SIZE // 2), CELL_SIZE // 2 - 5)
 
         for column_index in range(COLUMN_COUNT):
             for row_index in range(ROW_COUNT):   
@@ -130,13 +154,16 @@ def runGame():
 
         if game_over > 0: 
             if game_over == P1_WIN:
-                p1_win_image = large_font.render('Red (1) Win', True, RED)
+                p1_win_image = large_font.render('빨강 Win', True, LIGHT_RED)
+                screen.fill(GRAY)
                 screen.blit(p1_win_image, p1_win_image.get_rect(centerx=SCREEN_WIDTH // 2, centery=SCREEN_HEIGHT // 2))
             elif game_over == P2_WIN:
-                p2_win_image = large_font.render('Yellow (2) Win', True, RED)
+                p2_win_image = large_font.render('노랑 Win', True, LIGHT_YELLOW)
+                screen.fill(GRAY)
                 screen.blit(p2_win_image, p2_win_image.get_rect(centerx=SCREEN_WIDTH // 2, centery=SCREEN_HEIGHT // 2))
             else:
-                draw_image = large_font.render('Draw', True, RED)
+                draw_image = large_font.render('무승부', True, BLACK)
+                screen.fill(GRAY)
                 screen.blit(draw_image, draw_image.get_rect(centerx=SCREEN_WIDTH // 2, centery=SCREEN_HEIGHT // 2))
 
         pygame.display.update()
