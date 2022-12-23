@@ -92,6 +92,7 @@ def main():
                 if firstSelection == None : # 현재의 상자가 처음 클릭 상자
                     firstSelection = (boxx,boxy)
                     chance = chance - 1
+                    #나가리
                 else: # 두번째 클릭한 상자 
                     #두 아이콘 짝이 맞는지 체크
                     icon1shape,icon1color = getShapeAndColor(mainBoard,firstSelection[0],firstSelection[1])
@@ -103,7 +104,7 @@ def main():
                         coverBoxesAnimation(mainBoard,[(firstSelection[0],firstSelection[1]),(boxx,boxy)])
                         revealedBoxes[firstSelection[0]][firstSelection[1]] = False #상자 닫아 ! 
                         revealedBoxes[boxx][boxy] = False  
-                    elif hasWon(revealedBoxes): #모든 아이콘이 열렸는지 확인한다. 
+                    elif hasWon(revealedBoxes): #모든 아이콘이 열렸는지 확인한다.
                         gameWonAnimation(mainBoard)
                         pygame.time.wait(2000)
 
@@ -118,7 +119,21 @@ def main():
 
                         #게임 시작 에니메이션을 보여준다. 
                         startGameAnimation(mainBoard)
-                    
+                    elif chance < 1:
+                        #실패 화면------------------------------------------------------------------------------------------
+                        pygame.time.wait(2000)
+
+                        #게임판 재설정
+                        mainBoard = getRandomizedBoard()
+                        revealedBoxes = generateRevealedBoxesData(False)
+
+                        #잠시 동안 게임판의 상자를 열어서 보여준다.
+                        drawBoard(mainBoard, revealedBoxes)
+                        pygame.display.update()
+                        pygame.time.wait(1000)
+
+                        #게임 시작 에니메이션을 보여준다. 
+                        startGameAnimation(mainBoard)
                     firstSelection = None # firstSelection 변수를 리셋  
 
         #화면을 다시 그린 다음 시간 지연을 기다린다. 
@@ -262,7 +277,7 @@ def startGameAnimation(board):
         coverBoxesAnimation(board,boxGroup)
     
 def gameWonAnimation(board):
-    #플레이어가 승리하면 배경색을 깜빡인다. ! 
+    #플레이어가 승리하면 배경색을 깜빡인다. ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     coveredBoxes = generateRevealedBoxesData(True)
     color1 = LIGHTBGCOLOR
     color2 = BGCOLOR
