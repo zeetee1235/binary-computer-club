@@ -277,7 +277,6 @@ def startGameAnimation(board):
         coverBoxesAnimation(board,boxGroup)
     
 def gameWonAnimation(board):
-    #플레이어가 승리하면 배경색을 깜빡인다. ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     coveredBoxes = generateRevealedBoxesData(True)
     color1 = LIGHTBGCOLOR
     color2 = BGCOLOR
