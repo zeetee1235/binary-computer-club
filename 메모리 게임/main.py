@@ -120,8 +120,17 @@ def main():
                         #게임 시작 에니메이션을 보여준다. 
                         startGameAnimation(mainBoard)
                     elif chance < 1:
-                        #실패 화면------------------------------------------------------------------------------------------
-                        pygame.time.wait(2000)
+                        coveredBoxes = generateRevealedBoxesData(True)
+                        color1 = LIGHTBGCOLOR
+                        color2 = BGCOLOR
+
+                        for i in range(13):
+                            color1,color2 = color2,color1 #색을 바꾼다.
+                            DISPLAYSURF.fill(color1)
+                            drawBoard(board,coveredBoxes)
+                            pygame.display.update()
+                            pygame.time.wait(300)
+                            pygame.time.wait(2000)
 
                         #게임판 재설정
                         mainBoard = getRandomizedBoard()
