@@ -105,11 +105,18 @@ def main():
                         pygame.display.update()
                         pygame.time.wait(1000)
                         startGameAnimation(mainBoard)
-                        chance = 5###
+                        chance = chance2
                 
                 else: 
                     icon1shape,icon1color = getShapeAndColor(mainBoard,firstSelection[0],firstSelection[1])
                     icon2shape,icon2color = getShapeAndColor(mainBoard,boxx,boxy)
+                    
+                    if icon1shape != icon2shape or icon1color != icon2color:
+                        pygame.time.wait(1000) 
+                        coverBoxesAnimation(mainBoard,[(firstSelection[0],firstSelection[1]),(boxx,boxy)])
+                        revealedBoxes[firstSelection[0]][firstSelection[1]] = False 
+                        revealedBoxes[boxx][boxy] = False  
+                        chance = chance - 1
                     
                     if chance == 0:
                         gameLoseAnimation(mainBoard)
@@ -121,14 +128,6 @@ def main():
                         pygame.time.wait(1000)
                         startGameAnimation(mainBoard)
                         chance = chance2
-                    
-                    
-                    if icon1shape != icon2shape or icon1color != icon2color:
-                        pygame.time.wait(1000) 
-                        coverBoxesAnimation(mainBoard,[(firstSelection[0],firstSelection[1]),(boxx,boxy)])
-                        revealedBoxes[firstSelection[0]][firstSelection[1]] = False 
-                        revealedBoxes[boxx][boxy] = False  
-                        chance = chance - 1
                     
                     elif hasWon(revealedBoxes): 
                         gameWonAnimation(mainBoard)
