@@ -15,7 +15,7 @@ XMARGIN = int((WINDOWWIDTH -(BOARDWIDTH*(BOXSIZE+GAPSIZE)))/2)
 YMARGIN = int((WINDOWHEIGHT -(BOARDHEIGHT*(BOXSIZE+GAPSIZE)))/2)
 large_font = pygame.font.SysFont('malgungothic', 50)
 very_large_font = pygame.font.SysFont('malgungothic', 200)
-chance = 1
+chance = 15
 chance2 = chance
 
 #            R    G    B
@@ -110,7 +110,6 @@ def main():
                 else: 
                     icon1shape,icon1color = getShapeAndColor(mainBoard,firstSelection[0],firstSelection[1])
                     icon2shape,icon2color = getShapeAndColor(mainBoard,boxx,boxy)
-                    chance = chance - 1
                     
                     if chance == 0:
                         gameLoseAnimation(mainBoard)
@@ -129,6 +128,7 @@ def main():
                         coverBoxesAnimation(mainBoard,[(firstSelection[0],firstSelection[1]),(boxx,boxy)])
                         revealedBoxes[firstSelection[0]][firstSelection[1]] = False 
                         revealedBoxes[boxx][boxy] = False  
+                        chance = chance - 1
                     
                     elif hasWon(revealedBoxes): 
                         gameWonAnimation(mainBoard)
